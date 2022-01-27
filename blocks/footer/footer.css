@@ -8,3 +8,14 @@
     font-size: 18px;
     line-height: 22px;
 }
+
+@media screen and (max-width: 999px) {
+    .footer {
+        width: 88.125%;
+        font-family: 'Inter', Arial, sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}

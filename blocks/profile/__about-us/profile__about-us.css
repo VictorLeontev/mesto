@@ -3,9 +3,9 @@
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
-    height: 18px;
+    line-height: 18px;
     color: #FFFFFF;
-    margin-bottom: 25px;
+    margin-bottom: 18px;
     margin-top: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -19,5 +19,6 @@
         line-height: 17px;
         margin-left: 50px;
         margin-right: 50px;
+        margin-bottom: 0;
     }
 }

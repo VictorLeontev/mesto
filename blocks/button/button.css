@@ -1,11 +1,9 @@
 .button {
     padding: 0;
     font-size: 0;
-    border: none;
     background-color: transparent;
 }
 
-button:hover {
-    opacity: 0.6;
+.button:hover {
     cursor: pointer;
 }
