@@ -1,0 +1,13 @@
+.element__button-delete {
+    background: url(../../../images/Bin.svg);
+    height: 19px;
+    width: 18px;
+    position: relative;
+    top: 39px;
+    left: 244px;
+    border: none;
+}
+
+.element__button-delete:hover {
+    opacity: 0.6;
+}
