@@ -1,0 +1,7 @@
+.popup__container-pictureFull {
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

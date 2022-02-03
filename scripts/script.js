@@ -31,7 +31,9 @@ buttonEdit.addEventListener("click", openPopupProfile);
 buttonCloseProfile.addEventListener("click", closePopupProfile);
 
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+
 /* функции для картинки */
+
 let buttonAdd = document.querySelector(".profile__button-add");
 let buttonClosePictures = document.querySelector("#buttonClosePicture");
 let popupPicture = document.querySelector("#pictureadding");
@@ -99,8 +101,10 @@ function appendCard(card, toBack) {
     pictureFull.addEventListener("click",
         function(e) {
             let pictureFullPopup = document.getElementById("picturefullscreen");
-            let pictureInfo = document.querySelector(".popup-image");
+            let pictureInfo = document.querySelector(".popup__image");
+            let pictureSignature = document.querySelector(".popup__signature")
             const cardElement = e.target.parentElement;
+            pictureSignature.textContent = cardElement.querySelector('.element__top').alt;
             pictureInfo.src = cardElement.querySelector('.element__top').src;
             pictureInfo.alt = cardElement.querySelector('.element__top').alt;
             pictureFullPopup.classList.add("popup_opened");
