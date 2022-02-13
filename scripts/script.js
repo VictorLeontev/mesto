@@ -9,11 +9,10 @@ const jobInput = document.getElementById('about-us');
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__about-us");
 
-/*function openPopupProfile() {
+function openPopupProfile() {
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
-    popupProfile.classList.add("popup_opened");
-}*/
+}
 
 function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
@@ -21,8 +20,8 @@ function formSubmitHandlerProfile(evt) {
     profileJob.textContent = jobInput.value;
 }
 
-buttonEdit.addEventListener("click", /*openPopupProfile*/ openPopup);
-buttonCloseProfile.addEventListener("click", closePopup);
+buttonEdit.addEventListener("click", /*openPopupProfile*/ () => openPopup(popupProfile));
+buttonCloseProfile.addEventListener("click", () => popupProfile.classList.remove("popup_opened"));
 
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
@@ -36,8 +35,8 @@ const popupPicture = document.querySelector("#pictureadding");
     popupPicture.classList.add("popup_opened");
 }*/
 
-buttonAdd.addEventListener("click", /*openPopupPicture*/ openPopup);
-buttonClosePictures.addEventListener("click", closePopup);
+buttonAdd.addEventListener("click", /*openPopupPicture*/ () => openPopup(popupPicture));
+buttonClosePictures.addEventListener("click", () => popupPicture.classList.remove("popup_opened"));
 
 const initialCards = [{
         name: 'Архыз',
@@ -76,8 +75,37 @@ function render() {
     initialCards.forEach(function(card) { appendCard(card /*, true*/ ); });
 };
 
-function appendCard(card /*, toBack*/ ) {
+function renderCard(card) {
     const cardElement = template.cloneNode(true);
+    cardElement.querySelector('.element__text').textContent = card.name;
+    cardElement.querySelector('.element__top').src = card.link;
+    cardElement.querySelector('.element__top').alt = card.name;
+
+    const button = cardElement.querySelector(".element__button-delete");
+    button.addEventListener("click",
+        function(e) {
+
+            const cardElement = e.target.parentElement;
+
+            elements.removeChild(cardElement);
+        });
+
+    const pictureFull = cardElement.querySelector(".element__top");
+    pictureFull.addEventListener("click",
+        function(e) {
+            const cardElement = e.target.parentElement;
+            pictureSignature.textContent = cardElement.querySelector('.element__top').alt;
+            pictureInfo.src = cardElement.querySelector('.element__top').src;
+            pictureInfo.alt = cardElement.querySelector('.element__top').alt;
+            pictureFullPopup.classList.add("popup_opened");
+        }
+    );
+
+    return cardElement;
+}
+
+function appendCard(card, /*toBack*/ ) {
+    /*const cardElement = template.cloneNode(true);
     cardElement.querySelector('.element__text').textContent = card.name;
     cardElement.querySelector('.element__top').src = card.link;
     cardElement.querySelector('.element__top').alt = card.name;
@@ -107,13 +135,13 @@ function appendCard(card /*, toBack*/ ) {
     } else {
         elements.prepend(cardElement);
     }*/
-    elements.append(cardElement);
+    elements.append(renderCard(card));
 };
 
 render();
 
 function prependCard(card) {
-    const cardElement = template.cloneNode(true);
+    /*const cardElement = template.cloneNode(true);
     cardElement.querySelector('.element__text').textContent = card.name;
     cardElement.querySelector('.element__top').src = card.link;
     cardElement.querySelector('.element__top').alt = card.name;
@@ -136,20 +164,20 @@ function prependCard(card) {
             pictureInfo.alt = cardElement.querySelector('.element__top').alt;
             pictureFullPopup.classList.add("popup_opened");
         }
-    );
-    elements.prepend(cardElement);
+    );*/
+    elements.prepend(renderCard(card));
 }
 
 
 const pictureFullCloseButton = document.getElementById("pictureFullClose");
-pictureFullCloseButton.addEventListener("click", closePopup);
+pictureFullCloseButton.addEventListener("click", () => pictureFullPopup.classList.remove("popup_opened"));
 
 /*adding function*/
 
-let pictureName = document.getElementById("picturename");
-let url = document.getElementById("url");
+const pictureName = document.getElementById("picturename");
+const url = document.getElementById("url");
 
-let formElementPicture = document.querySelector("#picturePopup");
+const formElementPicture = document.querySelector("#picturePopup");
 
 function formSubmitHandlerPicture(evt) {
     evt.preventDefault();
@@ -158,22 +186,22 @@ function formSubmitHandlerPicture(evt) {
     picture.link = url.value;
     /*appendCard(picture, false);*/
     prependCard(picture);
-    document.addEventListener('animationend', function(e) {
+    /*document.addEventListener('animationend', function(e) {
         if (e.animationName === 'fade-out') {
             e.target.classList.remove('did-fade-in');
         }
-    });
+    });*/
 }
 
 formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
 
 const profileSaveButton = document.getElementById("profileSaveButton");
 const profileAddButton = document.getElementById("profileAddButton");
-profileSaveButton.addEventListener("click", closePopup); /* Когда вставляю функцию closePopup в функцию formSubmitHandler, evt.preventDefault мешает закрытию, передавая на e.target значение undefined. В данном же случае и preventDefault отрабатывает и closePopup так же корректно ведет себя */
-profileAddButton.addEventListener("click", closePopup);
+profileSaveButton.addEventListener("click", () => popupProfile.classList.remove("popup_opened")); /* Когда вставляю функцию closePopup в функцию formSubmitHandler, evt.preventDefault мешает закрытию, передавая на e.target значение undefined. В данном же случае и preventDefault отрабатывает и closePopup так же корректно ведет себя */
+profileAddButton.addEventListener("click", () => popupPicture.classList.remove("popup_opened"));
 
-function closePopup(evt) {
-    let popups;
+/*function closePopup(popups) {
+    //let popups;
 
     if (evt.target === buttonCloseProfile || evt.target === profileSaveButton) {
         popups = popupProfile;
@@ -184,20 +212,14 @@ function closePopup(evt) {
     }
 
     popups.classList.remove("popup_opened");
+}*/
 
-    //popups.classList.add("popup_closed");
-}
+function openPopup(popups) {
 
-function openPopup(evt) {
+    //let popups;
 
-    let popups;
-
-    if (evt.target === buttonEdit) {
-        profileName.textContent = nameInput.value;
-        profileJob.textContent = jobInput.value;
-        popups = popupProfile;
-    } else if (evt.target === buttonAdd) {
-        popups = popupPicture;
+    if (popups === popupProfile) {
+        openPopupProfile();
     };
 
     //popups.classList.remove("popup_closed");
