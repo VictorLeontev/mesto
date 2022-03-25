@@ -10,7 +10,7 @@ const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__about-us");
 
 function openPopupProfile(popups) {
-    popups.classList.add("popup_opened"); /* Вы хотели так???*/
+    popups.classList.add("popup_opened");
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
 }
@@ -24,6 +24,19 @@ function formSubmitHandlerProfile(evt) {
 
 buttonEdit.addEventListener("click", () => openPopupProfile(popupProfile));
 buttonCloseProfile.addEventListener("click", () => closePopup(popupProfile));
+popupProfile.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(popupProfile);
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePopup(popupProfile);
+        closePopup(popupPicture);
+        closePopup(pictureFullPopup);
+    }
+});
 
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
@@ -35,6 +48,12 @@ const popupPicture = document.querySelector("#pictureadding");
 
 buttonAdd.addEventListener("click", () => openPopup(popupPicture));
 buttonClosePictures.addEventListener("click", () => closePopup(popupPicture));
+popupPicture.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(popupPicture);
+    }
+});
+
 
 const initialCards = [{
         name: 'Архыз',
@@ -68,6 +87,12 @@ const elements = document.querySelector('.elements');
 const pictureFullPopup = document.getElementById("picturefullscreen");
 const pictureInfo = document.querySelector(".popup__image");
 const pictureSignature = document.querySelector(".popup__signature");
+
+pictureFullPopup.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(pictureFullPopup);
+    }
+});
 
 function render() {
     initialCards.forEach(function(card) { appendCard(card); });
@@ -128,15 +153,112 @@ function formSubmitHandlerPicture(evt) {
     picture.link = url.value;
     prependCard(picture);
     closePopup(popupPicture);
-}
+};
 
 formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
 
 function closePopup(popups) {
     popups.classList.remove("popup_opened");
-}
+};
 
 function openPopup(popups) {
     popups.classList.add("popup_opened");
-}
-/*Беспорядок в обЪвлении переменных я устраню. Если я сейчас это сделаю, то просто запутаюсь где-что.*/
+};
+
+const showInputError = (formElement, inputElement, errorMessage) => {
+    const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+    inputElement.classList.add('form__input_type_error');
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add('form__input-error_active');
+};
+
+const hideInputError = (formElement, inputElement) => {
+    const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+    inputElement.classList.remove('form__input_type_error');
+    errorElement.classList.remove('form__input-error_active');
+    errorElement.textContent = '';
+};
+
+const checkInputValidity = (formElement, inputElement) => {
+    if (!inputElement.validity.valid) {
+        showInputError(formElement, inputElement, inputElement.validationMessage);
+    } else {
+        hideInputError(formElement, inputElement);
+    };
+};
+
+const hasInvalidInput = (inputList) => {
+    return inputList.some((inputElement) => {
+        return !inputElement.validity.valid;
+    });
+};
+
+const setEventListeners = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+    const buttonElement = formElement.querySelector(submitButtonSelector);
+
+    toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+
+    inputList.forEach((inputElement) => {
+        inputElement.addEventListener('input', () => {
+            checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
+            toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+        });
+    });
+};
+
+const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass }) => {
+    const formList = Array.from(document.querySelectorAll(formSelector));
+
+    formList.forEach((formElement) => {
+        setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
+    });
+};
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__item',
+    submitButtonSelector: '.popup__button-save',
+    inactiveButtonClass: '.button__inactive',
+    inputErrorClass: 'form__input_type_error',
+    errorClass: 'form__input-error'
+});
+
+/*function setEventListeners(formElement) {
+    const inputList = Array.from(formElement.querySelectorAll('popup__item'));
+    const buttonElement = Array.from(formElement.querySelectorAll('popup__button-save'));
+
+    toggleButtonState(inputList, buttonElement);
+
+    inputList.forEach((inputElement) => {
+        inputElement.addEventListener('input', function() {
+            checkInputValidity(formElement, inputElement);
+
+            toggleButtonState(inputList, buttonElement);
+        });
+    });
+};
+
+function enableValidation() {
+    let formList = Array.from(document.querySelectorAll('popup__form'));
+    formList.forEach((formElement) => {
+        formElement.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+        });
+        const fieldsetList = Array.from(formElement.querySelectorAll('form__set'));
+
+        fieldsetList.forEach((fieldSet) => {
+            setEventListeners(fieldSet);
+        });
+    });
+};
+
+enableValidation();*/
+
+function toggleButtonState(inputList, buttonElement) {
+    if (hasInvalidInput(inputList)) {
+        buttonElement.classList.add('button__inactive');
+    } else {
+        buttonElement.classList.remove('button__inactive');
+    }
+};
