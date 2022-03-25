@@ -52,15 +52,15 @@ enableValidation({
     formSelector: '.popup__form',
     inputSelector: '.popup__item',
     submitButtonSelector: '.popup__button-save',
-    inactiveButtonClass: '.button__inactive',
+    inactiveButtonClass: '.popup__button-save_inactive',
     inputErrorClass: 'form__input_type_error',
     errorClass: 'form__input-error'
 });
 
 function toggleButtonState(inputList, buttonElement) {
     if (hasInvalidInput(inputList)) {
-        buttonElement.classList.add('button__inactive');
+        buttonElement.classList.add('popup__button-save_inactive');
     } else {
-        buttonElement.classList.remove('button__inactive');
+        buttonElement.classList.remove('popup__button-save_inactive');
     }
 };
