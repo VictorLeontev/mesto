@@ -14,10 +14,6 @@
     border: none;
 }
 
-.popup__button-save:hover {
-    opacity: 0.8;
-}
-
 @media screen and (max-width: 488px) {
     .popup__button-save {
         font-size: 14px;

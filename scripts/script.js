@@ -9,12 +9,6 @@ const jobInput = document.getElementById('about-us');
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__about-us");
 
-function openPopupProfile(popups) {
-    popups.classList.add("popup_opened");
-    profileName.textContent = nameInput.value;
-    profileJob.textContent = jobInput.value;
-}
-
 function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
@@ -22,7 +16,7 @@ function formSubmitHandlerProfile(evt) {
     closePopup(popupProfile);
 }
 
-buttonEdit.addEventListener("click", () => openPopupProfile(popupProfile));
+buttonEdit.addEventListener("click", () => openPopup(popupProfile));
 buttonCloseProfile.addEventListener("click", () => closePopup(popupProfile));
 popupProfile.addEventListener("click", function(evt) {
     if (evt.target.classList.contains('popup')) {
@@ -32,9 +26,8 @@ popupProfile.addEventListener("click", function(evt) {
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        closePopup(popupProfile);
-        closePopup(popupPicture);
-        closePopup(pictureFullPopup);
+        const popupActive = document.querySelector(".popup_opened");
+        closePopup(popupActive);
     }
 });
 
@@ -148,19 +141,20 @@ const formElementPicture = document.querySelector("#picturePopup");
 
 function formSubmitHandlerPicture(evt) {
     evt.preventDefault();
-    const picture = new Object();
-    picture.name = pictureName.value;
-    picture.link = url.value;
+    const picture = {
+        name: pictureName.value,
+        link: url.value
+    };
     prependCard(picture);
     closePopup(popupPicture);
 };
 
 formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
 
-function closePopup(popups) {
-    popups.classList.remove("popup_opened");
+function closePopup(popup) {
+    popup.classList.remove("popup_opened");
 };
 
-function openPopup(popups) {
-    popups.classList.add("popup_opened");
+function openPopup(popup) {
+    popup.classList.add("popup_opened");
 };
