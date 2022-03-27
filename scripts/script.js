@@ -1,3 +1,4 @@
+/*Variables for Editing popup */
 const buttonEdit = document.querySelector(".profile__button-edit");
 const buttonCloseProfile = document.querySelector("#buttonCloseProfile");
 const popupProfile = document.querySelector("#profileedit");
@@ -8,6 +9,28 @@ const nameInput = document.getElementById('name');
 const jobInput = document.getElementById('about-us');
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__about-us");
+
+/*Variables for Picture inserter*/
+const buttonAdd = document.querySelector(".profile__button-add");
+const buttonClosePictures = document.querySelector("#buttonClosePicture");
+const popupPicture = document.querySelector("#pictureadding");
+
+/*Variables for Cards*/
+const template = document.querySelector('.element__item').content;
+const elements = document.querySelector('.elements');
+
+const pictureFullPopup = document.getElementById("picturefullscreen");
+const pictureInfo = document.querySelector(".popup__image");
+const pictureSignature = document.querySelector(".popup__signature");
+
+const pictureFullCloseButton = document.getElementById("pictureFullClose");
+
+const pictureName = document.getElementById("picturename");
+const url = document.getElementById("url");
+
+const formElementPicture = document.querySelector("#picturePopup");
+
+/*Function of Editing popup*/
 
 function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
@@ -35,10 +58,6 @@ formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
 /* функции для картинки */
 
-const buttonAdd = document.querySelector(".profile__button-add");
-const buttonClosePictures = document.querySelector("#buttonClosePicture");
-const popupPicture = document.querySelector("#pictureadding");
-
 buttonAdd.addEventListener("click", () => openPopup(popupPicture));
 buttonClosePictures.addEventListener("click", () => closePopup(popupPicture));
 popupPicture.addEventListener("click", function(evt) {
@@ -46,7 +65,6 @@ popupPicture.addEventListener("click", function(evt) {
         closePopup(popupPicture);
     }
 });
-
 
 const initialCards = [{
         name: 'Архыз',
@@ -73,13 +91,6 @@ const initialCards = [{
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
 ];
-
-const template = document.querySelector('.element__item').content;
-const elements = document.querySelector('.elements');
-
-const pictureFullPopup = document.getElementById("picturefullscreen");
-const pictureInfo = document.querySelector(".popup__image");
-const pictureSignature = document.querySelector(".popup__signature");
 
 pictureFullPopup.addEventListener("click", function(evt) {
     if (evt.target.classList.contains('popup')) {
@@ -128,16 +139,9 @@ function prependCard(card) {
     elements.prepend(renderCard(card));
 }
 
-
-const pictureFullCloseButton = document.getElementById("pictureFullClose");
 pictureFullCloseButton.addEventListener("click", () => closePopup(pictureFullPopup));
 
 /*adding function*/
-
-const pictureName = document.getElementById("picturename");
-const url = document.getElementById("url");
-
-const formElementPicture = document.querySelector("#picturePopup");
 
 function formSubmitHandlerPicture(evt) {
     evt.preventDefault();
@@ -151,8 +155,26 @@ function formSubmitHandlerPicture(evt) {
 
 formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
 
+function resetForm() {
+    const formList = document.querySelectorAll('.popup__form');
+    formList.forEach((element) => {
+        element.reset();
+    });
+};
+
+function deleteErrorInput() {
+    const errorList = document.querySelectorAll('.popup-error');
+
+    errorList.forEach((element) => {
+        element.classList.remove('.form__input-error_active');
+        element.textContent = '';
+    });
+};
+
 function closePopup(popup) {
     popup.classList.remove("popup_opened");
+    resetForm();
+    deleteErrorInput();
 };
 
 function openPopup(popup) {
