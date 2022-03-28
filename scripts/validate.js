@@ -1,22 +1,22 @@
-const showInputError = (formElement, inputElement, errorMessage, inputErrorClass) => {
+const showInputError = (formElement, inputElement, errorMessage, inputErrorClass, errorClass) => {
     const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
     inputElement.classList.add(inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add('form__input-error_active');
+    errorElement.classList.add(errorClass);
 };
 
-const hideInputError = (formElement, inputElement, inputErrorClass) => {
+const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
     const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
     inputElement.classList.remove(inputErrorClass);
-    errorElement.classList.remove('form__input-error_active');
+    errorElement.classList.remove(errorClass);
     errorElement.textContent = '';
 };
 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, inputErrorClass, errorClass) => {
     if (!inputElement.validity.valid) {
-        showInputError(formElement, inputElement, inputElement.validationMessage);
+        showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass, errorClass);
     } else {
-        hideInputError(formElement, inputElement);
+        hideInputError(formElement, inputElement, inputErrorClass, errorClass);
     };
 };
 
@@ -57,12 +57,12 @@ enableValidation({
     errorClass: 'form__input-error'
 });
 
-function toggleButtonState(inputList, buttonElement) {
+function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
     if (hasInvalidInput(inputList)) {
-        buttonElement.classList.add('popup__button-save_inactive');
+        buttonElement.classList.add(inactiveButtonClass);
         buttonElement.classList.remove('button');
     } else {
-        buttonElement.classList.remove('popup__button-save_inactive');
+        buttonElement.classList.remove(inactiveButtonClass);
         buttonElement.classList.add('button');
     }
 };

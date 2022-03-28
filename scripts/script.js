@@ -14,6 +14,7 @@ const profileJob = document.querySelector(".profile__about-us");
 const buttonAdd = document.querySelector(".profile__button-add");
 const buttonClosePictures = document.querySelector("#buttonClosePicture");
 const popupPicture = document.querySelector("#pictureadding");
+const buttonAddInPopup = document.querySelector('#profileAddButton');
 
 /*Variables for Cards*/
 const template = document.querySelector('.element__item').content;
@@ -39,32 +40,14 @@ function formSubmitHandlerProfile(evt) {
     closePopup(popupProfile);
 }
 
-buttonEdit.addEventListener("click", () => openPopup(popupProfile));
-buttonCloseProfile.addEventListener("click", () => closePopup(popupProfile));
-popupProfile.addEventListener("click", function(evt) {
-    if (evt.target.classList.contains('popup')) {
-        closePopup(popupProfile);
-    }
-});
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        const popupActive = document.querySelector(".popup_opened");
-        closePopup(popupActive);
-    }
-});
-
-formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+const closePopupByEsc = (evt) => {
+    const activePopup = document.querySelector('.popup_opened');
+    if (evt.key === 'Escape') {
+        closePopup(activePopup);
+    };
+};
 
 /* функции для картинки */
-
-buttonAdd.addEventListener("click", () => openPopup(popupPicture));
-buttonClosePictures.addEventListener("click", () => closePopup(popupPicture));
-popupPicture.addEventListener("click", function(evt) {
-    if (evt.target.classList.contains('popup')) {
-        closePopup(popupPicture);
-    }
-});
 
 const initialCards = [{
         name: 'Архыз',
@@ -91,12 +74,6 @@ const initialCards = [{
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
 ];
-
-pictureFullPopup.addEventListener("click", function(evt) {
-    if (evt.target.classList.contains('popup')) {
-        closePopup(pictureFullPopup);
-    }
-});
 
 function render() {
     initialCards.forEach(function(card) { appendCard(card); });
@@ -137,9 +114,8 @@ render();
 
 function prependCard(card) {
     elements.prepend(renderCard(card));
+    buttonAddInPopup.classList.add('popup__button-save_inactive');
 }
-
-pictureFullCloseButton.addEventListener("click", () => closePopup(pictureFullPopup));
 
 /*adding function*/
 
@@ -153,8 +129,6 @@ function formSubmitHandlerPicture(evt) {
     closePopup(popupPicture);
 };
 
-formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
-
 function resetForm() {
     const formList = document.querySelectorAll('.popup__form');
     formList.forEach((element) => {
@@ -163,20 +137,57 @@ function resetForm() {
 };
 
 function deleteErrorInput() {
-    const errorList = document.querySelectorAll('.popup-error');
+    const errorItem = document.querySelectorAll('.popup-error');
+    const inputItem = document.querySelectorAll('.popup__item');
 
-    errorList.forEach((element) => {
-        element.classList.remove('.form__input-error_active');
+    inputItem.forEach((element) => {
+        element.classList.remove('form__input_type_error');
+    });
+
+    errorItem.forEach((element) => {
+        element.classList.remove('form__input-error');
         element.textContent = '';
     });
 };
 
 function closePopup(popup) {
-    popup.classList.remove("popup_opened");
+    document.removeEventListener('keydown', closePopupByEsc);
     resetForm();
     deleteErrorInput();
+
+    popup.classList.remove("popup_opened");
 };
 
 function openPopup(popup) {
+    document.addEventListener('keydown', closePopupByEsc);
+
     popup.classList.add("popup_opened");
 };
+
+buttonEdit.addEventListener("click", () => openPopup(popupProfile));
+buttonCloseProfile.addEventListener("click", () => closePopup(popupProfile));
+popupProfile.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(popupProfile);
+    }
+});
+
+formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+
+buttonAdd.addEventListener("click", () => openPopup(popupPicture));
+buttonClosePictures.addEventListener("click", () => closePopup(popupPicture));
+popupPicture.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(popupPicture);
+    }
+});
+
+pictureFullPopup.addEventListener("click", function(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(pictureFullPopup);
+    }
+});
+
+pictureFullCloseButton.addEventListener("click", () => closePopup(pictureFullPopup));
+
+formElementPicture.addEventListener('submit', formSubmitHandlerPicture);
