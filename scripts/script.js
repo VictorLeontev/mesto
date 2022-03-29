@@ -31,6 +31,10 @@ const url = document.getElementById("url");
 
 const formElementPicture = document.querySelector("#picturePopup");
 
+const buttonLikeSwitch = (evt) => {
+    evt.target.classList.toggle('element__button-like_active');
+};
+
 /*Function of Editing popup*/
 
 function formSubmitHandlerProfile(evt) {
@@ -84,6 +88,9 @@ function renderCard(card) {
     cardElement.querySelector('.element__text').textContent = card.name;
     cardElement.querySelector('.element__top').src = card.link;
     cardElement.querySelector('.element__top').alt = card.name;
+
+    const buttonLike = cardElement.querySelector(".element__button-like");
+    buttonLike.addEventListener('click', buttonLikeSwitch);
 
     const button = cardElement.querySelector(".element__button-delete");
     button.addEventListener("click",
