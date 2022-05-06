@@ -19,8 +19,8 @@ export default class Card {
 
     generateCard() {
         this._element = this._getTemplate();
-        this._setEventListeners();
         this._likeButton = this._element.querySelector('.element__button-like');
+        this._setEventListeners();
 
         const pictureFull = this._element.querySelector('.element__top');
 
@@ -53,7 +53,7 @@ export default class Card {
 
     _setEventListeners() {
 
-        this._element.querySelector('.element__button-like').addEventListener('click', () => {
+        this._likeButton.addEventListener('click', () => {
             this._toggleLike();
         });
 

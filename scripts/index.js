@@ -55,8 +55,14 @@ render(initialCards);
 
 function prependCard(card) {
     elements.prepend(renderCard(card));
-    formValidCard.disableSubmitButton();
 }
+
+function resetForm() {
+    const formList = document.querySelectorAll('.popup__form');
+    formList.forEach((element) => {
+        element.reset();
+    });
+};
 
 export function openPopup(popup) {
     document.addEventListener('keydown', closePopupByEsc);
@@ -67,14 +73,7 @@ export function openPopup(popup) {
 function closePopup(popup) {
     document.removeEventListener('keydown', closePopupByEsc);
     popup.classList.remove("popup_opened");
-};
-
-const closePopupByOverlayClick = (popup) => {
-    popup.addEventListener('mousedown', (e) => {
-        if (e.target === popup && popup.classList.contains('popup_opened')) {
-            closePopup(popup);
-        }
-    });
+    resetForm();
 };
 
 const closePopupByEsc = (evt) => {
