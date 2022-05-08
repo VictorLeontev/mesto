@@ -57,13 +57,6 @@ function prependCard(card) {
     elements.prepend(renderCard(card));
 }
 
-function resetForm() {
-    const formList = document.querySelectorAll('.popup__form');
-    formList.forEach((element) => {
-        element.reset();
-    });
-};
-
 export function openPopup(popup) {
     document.addEventListener('keydown', closePopupByEsc);
 
@@ -73,7 +66,6 @@ export function openPopup(popup) {
 function closePopup(popup) {
     document.removeEventListener('keydown', closePopupByEsc);
     popup.classList.remove("popup_opened");
-    resetForm();
 };
 
 const closePopupByEsc = (evt) => {
@@ -98,7 +90,8 @@ function handlePictureFormSubmit(evt) {
     };
     prependCard(picture);
     closePopup(popupPicture);
-    //pictureForm.reset();
+    formValidCard.disableSubmitButton();
+    pictureForm.reset();
 };
 
 formValidProfile.enableValidation();
@@ -115,7 +108,6 @@ buttonEdit.addEventListener('click', () => {
 });
 
 buttonAdd.addEventListener('click', () => {
-    formValidCard.disableSubmitButton();
     openPopup(popupPicture);
 });
 
